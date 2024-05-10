@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes</title>
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            padding-top: 60px;
+        }
+        
+
+        header {
+            background-color: #f1f0f0;
+            color: blue;
+            padding: 10px;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .quote-container {
+            width: 80%;
+            max-width: 800px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .quote-content {
+            margin-bottom: 10px;
+        }
+
+        .quote-actions {
+            margin-top: 10px;
+        }
+
+        .quote-actions button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Quote App, {{ current_user.username }}</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('add_quote') }}">Add Quote</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <div>
+            <h2>Quotes</h2>
+            <ul>
+                {% for quote in quotes %}
+                    <li>
+                        <p>{{ quote.content }}</p>
+                        <p>Source: {{ quote.source }} - {{ quote.date_posted.strftime('%B %d, %Y %H:%M') }}</p> <!-- Format the date -->
+                        {% if current_user == quote.author %}
+                            <a href="{{ url_for('edit_quote', quote_id=quote.id) }}">Edit</a>
+                            <form action="{{ url_for('delete_quote', quote_id=quote.id) }}" method="post">
+                                <button type="submit">Delete</button>
+                            </form>
+                        {% endif %}
+                        <h3>Comments</h3>
+                        <ul>
+                            {% for comment in quote.comments %}
+                                <li>{{ comment.content }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% if current_user %}
+                            <form action="{{ url_for('view_quote', quote_id=quote.id) }}" method="post">
+                                {{ comment_form.hidden_tag() }}
+                                {{ comment_form.content.label }}<br>
+                                {{ comment_form.content(size=20) }}
+                                {{ comment_form.public.label }} {{ comment_form.public() }}
+                                <button type="submit">Add Comment</button>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+    </main>
+</body>
+</html>
