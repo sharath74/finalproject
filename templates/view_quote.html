@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Quote</title>
+</head>
+<body>
+    <header>
+        <h1>View Quote</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <div>
+            <h2>Quote</h2>
+            <p>{{ quote.content }}</p>
+            <p>Source: {{ quote.source }}</p> <!-- Display the source of the quote -->
+        </div>
+
+        <div>
+            <h2>Comments</h2>
+            <ul>
+                {% for comment in comments %}
+                    <li>{{ comment.content }} - {{ comment.author.username }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <h2>Add a Comment</h2>
+            <form method="post" action="{{ url_for('view_quote', quote_id=quote.id) }}">
+                {{ comment_form.hidden_tag() }}
+                <div>
+                    {{ comment_form.content.label }}<br>
+                    {{ comment_form.content(size=20) }}
+                </div>
+                <div>
+                    {{ comment_form.public.label }} {{ comment_form.public() }}
+                </div>
+                <div>
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+            
+        </div>
+    </main>
+</body>
+</html>

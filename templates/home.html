@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h1>All Quotes</h1>
+    <ul>
+        {% for quote in quotes %}
+            <li>
+                <blockquote>
+                    {{ quote.content }}
+                    {% if quote.source %}
+                        <footer>{{ quote.source }}</footer>
+                    {% endif %}
+                    {% if current_user == quote.author %}
+                        <a href="{{ url_for('edit_quote', quote_id=quote.id) }}">Edit</a>
+                        <form action="{{ url_for('delete_quote', quote_id=quote.id) }}" method="post">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="submit" value="Delete">
+                        </form>
+                    {% endif %}
+                </blockquote>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('add_quote') }}">Add Quote</a>
+{% endblock %}

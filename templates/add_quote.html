@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Quote</title>
+</head>
+<body>
+    <h2>Add Quote</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.content.label }}<br>{{ form.content(size=50) }}</p>
+        <p>{{ form.source.label }}<br>{{ form.source(size=50) }}</p>
+        <p>{{ form.public }} {{ form.public.label }}</p>
+        <p>{{ form.comments_allowed }} {{ form.comments_allowed.label }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</body>
+</html>
